@@ -45,11 +45,31 @@ export default {
     margin-right: auto;
     font-size: 26px;
 
+    &__divider {
+        animation: blink infinite 1s;
+    }
+
     &__timezone {
         margin-left: 8px;
         align-self: flex-end;
         color: $light-gray;
         font-size: 12px;
+    }
+
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    49% {
+        opacity: 0;
+    }
+    51% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 </style>

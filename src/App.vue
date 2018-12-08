@@ -5,19 +5,22 @@
     .main
       router-view.main__content
       widget.main__widgets(v-if="isShowWidget")
+        employee-efficiency
 </template>
 
 <script>
 import MainHeader from "@/components/blocks/Header.vue";
 import Sidebar from "@/components/blocks/Sidebar.vue";
 import Widget from "@/components/elements/Widget.vue";
+import EmployeeEfficiency from "@/components/forms/EmployeeEfficiency.vue";
 import * as feather from 'feather-icons';
 
 export default {
   components: {
     MainHeader,
     Sidebar,
-    Widget
+    Widget,
+    EmployeeEfficiency
   },
   computed: {
     isShowWidget() {
