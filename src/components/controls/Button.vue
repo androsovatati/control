@@ -75,6 +75,7 @@ export default {
   box-sizing: border-box;
   border-radius: 23px;
   line-height: 45px;
+  text-align: center;
   transition: all .3s ease;
   cursor: pointer;
 

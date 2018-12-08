@@ -4,7 +4,7 @@
     main-header.header
     .main
       router-view.main__content
-      widget.main__widgets
+      widget.main__widgets(v-if="isShowWidget")
 </template>
 
 <script>
@@ -18,6 +18,11 @@ export default {
     MainHeader,
     Sidebar,
     Widget
+  },
+  computed: {
+    isShowWidget() {
+      return this.$route.name === 'events' || this.$route.name === 'statistic'
+    },
   },
   mounted() {
     feather.replace();
@@ -56,12 +61,12 @@ export default {
 
   &__content {
     flex-grow: 1;
-    margin-right: 40px;
   }
 
   &__widgets {
     flex-grow: 0;
     flex-shrink: 0;
+    margin-left: 40px;
     width: 280px;
   }
 }
