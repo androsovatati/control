@@ -14,6 +14,7 @@ import Sidebar from "@/components/blocks/Sidebar.vue";
 import Widget from "@/components/elements/Widget.vue";
 import EmployeeEfficiency from "@/components/forms/EmployeeEfficiency.vue";
 import * as feather from 'feather-icons';
+import axios from 'axios';
 
 export default {
   components: {
@@ -29,7 +30,11 @@ export default {
   },
   mounted() {
     feather.replace();
-  }
+  },
+  async created() {
+    // const res = await axios.get('https://d28c950f.ngrok.io/api/employees');
+    // debugger;
+  },
 };
 </script>
 
