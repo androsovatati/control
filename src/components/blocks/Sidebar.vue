@@ -6,28 +6,28 @@
         to="events"
         :class="getLinkClass('events')"
       )
-        i.menu-item__logo(data-feather="clipboard")
+        i.menu-item__icon(data-feather="clipboard")
         .menu-item__text События
         .menu-item__notice 35
       router-link.sidebar-menu__item.menu-item(
         to="contracts"
         :class="getLinkClass('contracts')"
       )
-        i.menu-item__logo(data-feather="file")
+        i.menu-item__icon(data-feather="file")
         .menu-item__text Контракты
         .menu-item__notice
       router-link.sidebar-menu__item.menu-item(
         to="map"
         :class="getLinkClass('map')"
       )
-        i.menu-item__logo(data-feather="map")
+        i.menu-item__icon(data-feather="map")
         .menu-item__text Карта
         .menu-item__notice
       router-link.sidebar-menu__item.menu-item(
         to="statistic"
         :class="getLinkClass('statistic')"
       )
-        i.menu-item__logo(data-feather="bar-chart")
+        i.menu-item__icon(data-feather="bar-chart")
         .menu-item__text Статистика
         .menu-item__notice
       router-link.sidebar-menu__item.menu-item(
@@ -35,7 +35,7 @@
         :class="getLinkClass('messages')"
         disabled
       )
-        i.menu-item__logo(data-feather="mail")
+        i.menu-item__icon(data-feather="mail")
         .menu-item__text Сообщения
         .menu-item__notice
       router-link.sidebar-menu__item.menu-item(
@@ -43,7 +43,7 @@
         :class="getLinkClass('tasks')"
         disabled
       )
-        i.menu-item__logo(data-feather="server")
+        i.menu-item__icon(data-feather="server")
         .menu-item__text Задачи
         .menu-item__notice
 </template>
@@ -119,10 +119,11 @@ export default {
     cursor: default;
   }
 
-  &__logo {
+  &__icon {
     width: 16px;
     height: 16px;
     margin-right: 11px;
+    color: $disabled-gray;
   }
 
   &__text {
