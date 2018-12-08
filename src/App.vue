@@ -13,8 +13,8 @@ import MainHeader from "@/components/blocks/Header.vue";
 import Sidebar from "@/components/blocks/Sidebar.vue";
 import Widget from "@/components/elements/Widget.vue";
 import EmployeeEfficiency from "@/components/forms/EmployeeEfficiency.vue";
+import { mapState, mapActions } from 'vuex';
 import * as feather from 'feather-icons';
-import axios from 'axios';
 
 export default {
   components: {
@@ -24,17 +24,22 @@ export default {
     EmployeeEfficiency
   },
   computed: {
+    ...mapState({
+      users: state => state.users,
+    }),
     isShowWidget() {
       return this.$route.name === 'events' || this.$route.name === 'statistic'
     },
+  },
+  methods: {
+    ...mapActions(['getUsers']),
   },
   mounted() {
     feather.replace();
   },
   async created() {
-    // const res = await axios.get('https://d28c950f.ngrok.io/api/employees');
-    // debugger;
-  },
+    await this.getUsers();
+  }
 };
 </script>
 
