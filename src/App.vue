@@ -2,18 +2,22 @@
   #app
     sidebar.sidebar
     main-header.header
-    router-view.content
+    .main
+      router-view.main__content
+      widget.main__widgets
 </template>
 
 <script>
 import MainHeader from "@/components/blocks/Header.vue";
 import Sidebar from "@/components/blocks/Sidebar.vue";
+import Widget from "@/components/elements/Widget.vue";
 import * as feather from 'feather-icons';
 
 export default {
   components: {
     MainHeader,
-    Sidebar
+    Sidebar,
+    Widget
   },
   mounted() {
     feather.replace();
@@ -30,7 +34,7 @@ export default {
   display: grid;
   grid-template-columns: 240px auto;
   grid-template-rows: 80px auto;
-  grid-template-areas: "sidebar header" "sidebar content";
+  grid-template-areas: "sidebar header" "sidebar main";
   color: $primary-gray;
   background: $bg-gray;
   min-height: 100vh;
@@ -45,7 +49,20 @@ export default {
 .header {
   grid-area: header;
 }
-.content {
-  grid-area: content;
+.main {
+  display: flex;
+  grid-area: main;
+  padding: 0 40px 60px 40px;
+
+  &__content {
+    flex-grow: 1;
+    margin-right: 40px;
+  }
+
+  &__widgets {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 280px;
+  }
 }
 </style>
