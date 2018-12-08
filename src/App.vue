@@ -6,13 +6,17 @@
 </template>
 
 <script>
-import MainHeader from "@/components/blocks/Header";
-import Sidebar from "@/components/blocks/Sidebar";
+import MainHeader from "@/components/blocks/Header.vue";
+import Sidebar from "@/components/blocks/Sidebar.vue";
+import * as feather from 'feather-icons';
 
 export default {
   components: {
     MainHeader,
     Sidebar
+  },
+  mounted() {
+    feather.replace();
   }
 };
 </script>
