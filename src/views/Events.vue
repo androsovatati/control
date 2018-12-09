@@ -1,10 +1,16 @@
 <template lang="pug">
   .events-page
+    event
 </template>
 
 <script>
+import Event from '@/components/blocks/Event.vue';
+
 export default {
   name: 'Events',
+  components: {
+    Event,
+  },
 }
 </script>
 
@@ -12,7 +18,5 @@ export default {
 @import "@/styles/colors.scss";
 
 .events-page {
-  background: white;
-  border-radius: 10px;
 }
 </style>
