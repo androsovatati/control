@@ -125,6 +125,7 @@ export default {
   &__view {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     transition: opacity .3s ease;
   }
 
@@ -141,7 +142,7 @@ export default {
 
   &__employees {
     margin-left: 40px;
-    width: 330px;
+    width: 280px;
   }
 
   .employees {
@@ -154,7 +155,8 @@ export default {
 .employee {
   display: flex;
   align-items: center;
-  padding: 15px 0;
+  padding: 10px 0;
+  font-size: 14px;
   border-bottom: 1px solid #dedede;
   &:last-child {
     border-bottom: none;

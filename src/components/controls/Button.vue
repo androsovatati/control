@@ -1,6 +1,6 @@
 <template lang="pug">
     .button-container(@click="$emit('click')")
-        .button-shadow(v-if="color === 'red'" :class="{ 'button-shadow_small': size === small}")
+        .button-shadow(v-if="color === 'red'" :class="{ 'button-shadow_small': size === 'small'}")
         .button(:class="buttonClass")
             slot
 </template>

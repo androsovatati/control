@@ -80,7 +80,7 @@ export default {
     flex-grow: 0;
     flex-shrink: 0;
     margin-left: 40px;
-    width: 280px;
+    width: 250px;
   }
 }
 </style>

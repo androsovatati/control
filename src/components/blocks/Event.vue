@@ -15,11 +15,18 @@
             span Перейти
             i(data-feather="chevron-right")
       .event__title ГБУ "ЖИЛИЩНИК РАЙОНА ЮЖНОЕ ТУШИНО"
-      .event__status Статус: Проверка не пройдена
-      .event__invalid-type Тип нарушения: Не соответствует требованиям
+      .event__status.event-status
+        .event-status__label Статус: 
+        .event-status__value Проверка не пройдена
+        .event-status__icon
+          i(data-feather="x")
+      .event__violation.event-violation
+        .event-violation__label Тип нарушения:
+        .event-violation__value Работы выполнены не в полном объеме
       .event__footer.event-footer
         .event-footer__files.files Прикреплено 6 файлов
         .event-footer__show-button
+          basic-button Посмотреть отчет
     .event__attends.attends
       .attends__comment.comment
         .comment__title.comment-title
@@ -40,8 +47,13 @@
 </template>
 
 <script>
+import BasicButton from '@/components/controls/Button.vue';
+
 export default {
   name: "Event",
+  components: {
+    BasicButton,
+  },
   props: {
     data: {
       type: Object,
@@ -52,7 +64,7 @@ export default {
     return {
       isCollapsed: true,
     };
-  }
+  },
 };
 </script>
 
@@ -66,6 +78,20 @@ export default {
 
   &__header {
     display: flex;
+  }
+
+  &__title {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 1px solid #dedede;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    margin-top: 28px;
   }
 }
 
@@ -99,7 +125,63 @@ export default {
   display: flex;
   align-items: center;
   margin-left: 80px;
+  width: 350px;
+  height: 60px;
   box-shadow: 0 0 34px 4px rgba(56, 56, 56, 0.1);
   border-radius: 10px;
+  font-size: 12px;
+  overflow: hidden;
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    margin: 0 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $red-gradient;
+    svg {
+      width: 14px;
+      height: 18px;
+      color: white;
+    }
+  }
+  &__number {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-right: 1px solid #dedede;
+  }
+  &__link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 15px;
+    color: $disabled-gray;
+    cursor: pointer;
+    &:hover {
+      background: rgba($color: $disabled-gray, $alpha: .1);
+    }
+    svg {
+      width: 15px;
+      height: 20px;
+    }
+  }
+}
+
+.event-status {
+  &__label {
+    font-weight: 500;
+    margin-right: 5px;
+  }
+}
+.event-violation {
+  display: flex;
+  align-items: center;
+  &__label {
+    font-weight: 500;
+    margin-right: 5px;
+  }
 }
 </style>
