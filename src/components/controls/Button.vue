@@ -1,6 +1,6 @@
 <template lang="pug">
     .button-container(@click="$emit('click')")
-        .button-shadow(v-if="color === 'red'" :class="{ 'button-shadow_small': size === 'small'}")
+        .button-shadow(v-if="color === 'red' || color === 'green'" :class="{ 'button-shadow_small': size === 'small'}")
         .button(:class="buttonClass")
             slot
 </template>
@@ -10,7 +10,7 @@ export default {
   name: "Button",
   props: {
     color: {
-      type: "red" | "white" | "gray",
+      type: "red" | "green" | "white" | "gray",
       default: "red"
     },
     size: {
@@ -22,6 +22,7 @@ export default {
     buttonClass() {
       return {
         button_red: this.color === "red",
+        button_green: this.color === "green",
         button_white: this.color === "white",
         button_gray: this.color === "gray",
         button_small: this.size === "small"
@@ -100,6 +101,17 @@ export default {
 
     &:hover {
       background-image: $red-gradient-reverse;
+    }
+  }
+
+  &_green {
+    position: relative;
+    color: white;
+    background-color: $green;
+    background-image: $green-gradient;
+
+    &:hover {
+      background-image: $green-gradient-reverse;
     }
   }
 

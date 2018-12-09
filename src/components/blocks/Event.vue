@@ -1,49 +1,53 @@
 <template lang="pug">
   .event
-    .event-line(:class="{ 'event-line_success' : data.isValid }")
-    .event__main-info
-      .event__header.event-header
-        .event-header__user.user
-          .user__avatar
-            img(src="https://randomuser.me/api/portraits/women/29.jpg")
-          .user__name Петрова Анна Степановна
-          .user__date сегодня 10:01
-        .event-header__contract.contract(
-          :class="{ 'contract_success' : data.isValid }"
-        )
-          .contract__icon
-            file-icon
-          .contract__number Контракт №57702038150150000160000
-          .contract__link
-            span Перейти
-            chevron-right-icon
-      .event__title ГБУ "ЖИЛИЩНИК РАЙОНА ЮЖНОЕ ТУШИНО"
-      .event__status.event-status
-        .event-status__label Статус: 
-        .event-status__value Проверка не пройдена
-        .event-status__icon(v-if="data.isValid")
-          check-icon.event-status__check-icon
-        .event-status__icon(v-else)
-          x-icon.event-status__x-icon
-      .event__violation.event-violation(v-if="!data.isValid")
-        .event-violation__label Тип нарушения:
-        .event-violation__value Работы выполнены не в полном объеме
-      .event__footer.event-footer
-        .event-footer__files.footer-files
-          .footer-files__text Прикреплено 6 файлов:
-          .footer-image
-            image-icon.footer-image__icon
-            .footer-image__count 5
-          .footer-records
-            mic-icon.footer-records__icon
-            .footer-records__count 1
-          message-circle-icon.footer-comments
-        .event-footer__show-button
-          basic-button Посмотреть отчет
-    .event__attends.attends
+    .event-main(:class="{ 'event-main_shadow': !isCollapsed }")
+      .event-line(:class="{ 'event-line_success' : data.isValid }")
+      .event__main-info
+        .event__header.event-header
+          .event-header__user.user
+            .user__avatar
+              img(src="https://randomuser.me/api/portraits/women/29.jpg")
+            .user__name Петрова Анна Степановна
+            .user__date сегодня 10:01
+          .event-header__contract.contract(
+            :class="{ 'contract_success' : data.isValid }"
+          )
+            .contract__icon
+              file-icon
+            .contract__number Контракт №57702038150150000160000
+            .contract__link
+              span Перейти
+              chevron-right-icon
+        .event__title ГБУ "ЖИЛИЩНИК РАЙОНА ЮЖНОЕ ТУШИНО"
+        .event__status.event-status
+          .event-status__label Статус: 
+          .event-status__value Проверка не пройдена
+          .event-status__icon(v-if="data.isValid")
+            check-icon.event-status__check-icon
+          .event-status__icon(v-else)
+            x-icon.event-status__x-icon
+        .event__violation.event-violation(v-if="!data.isValid")
+          .event-violation__label Тип нарушения:
+          .event-violation__value Работы выполнены не в полном объеме
+        .event__footer.event-footer
+          .event-footer__files.footer-files
+            .footer-files__text Прикреплено 6 файлов:
+            .footer-image
+              image-icon.footer-image__icon
+              .footer-image__count 5
+            .footer-records
+              mic-icon.footer-records__icon
+              .footer-records__count 1
+            message-circle-icon.footer-comments
+          basic-button.event-footer__show-button(:color="data.isValid ? 'green' : 'red'" @click="isCollapsed = !isCollapsed")
+              div(v-if="isCollapsed") Посмотреть отчет
+              div.button-text(v-else)
+                span Свернуть
+                chevron-up-icon
+    .event__attends.attends(v-if="!isCollapsed")
       .attends__comment.comment
         .comment__title.comment-title
-          .comment-title__icon
+          message-circle-icon.comment-title__icon
           .comment-title__text
         .comment__text
       .attends__photo.photo
@@ -61,7 +65,7 @@
 
 <script>
 import BasicButton from '@/components/controls/Button.vue';
-import { FileIcon, XIcon, ChevronRightIcon, ImageIcon, MicIcon, MessageCircleIcon, CheckIcon } from 'vue-feather-icons';
+import { FileIcon, XIcon, ChevronRightIcon, ChevronUpIcon, ImageIcon, MicIcon, MessageCircleIcon, CheckIcon } from 'vue-feather-icons';
 
 export default {
   name: "Event",
@@ -73,7 +77,8 @@ export default {
     ImageIcon,
     MicIcon,
     MessageCircleIcon,
-    CheckIcon
+    CheckIcon,
+    ChevronUpIcon
   },
   props: {
     data: {
@@ -93,11 +98,19 @@ export default {
 @import "@/styles/colors.scss";
 
 .event {
-  position: relative;
   background: white;
   border-radius: 10px;
-  padding: 25px 30px;
   overflow: hidden;
+
+  &-main {
+    padding: 25px 30px;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    &_shadow {
+      box-shadow: 0 7px 34px 4px rgba(56, 56, 56, 0.1);
+    }
+  }
 
   &-line {
     position: absolute;
@@ -252,6 +265,10 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &__show-button {
+    width: 170px;
+  }
 }
 .footer-files {
   display: flex;
@@ -307,5 +324,15 @@ export default {
 .footer-comments {
   margin-left: 12px;
   width: 18px;
+}
+.button-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  svg {
+    width: 18px;
+  }
 }
 </style>
