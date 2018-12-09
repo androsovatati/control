@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "feather-icon": "^0.1.0",
     "feather-icons": "^4.9.0",
+    "file-saver": "^2.0.0",
     "here-js-api": "^1.0.10",
     "i": "^0.3.6",
     "npm": "^6.4.1",

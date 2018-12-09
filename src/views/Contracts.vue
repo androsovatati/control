@@ -1,22 +1,23 @@
 <template lang="pug">
   .contracts
-    VueDropzone(:options="dropzoneOptions", ref="myVueDropzone").invisible
-    base-button.contracts__upload(@click="uploadFile") Загрузите файл
-    table.contracts__table(v-if="contracts")
-      tr
-        th(v-for="title in tableColumnsTitle") {{ title }}
-      tr
-        td(v-for="(title, i) in tableColumnsTitle") {{ i }}
-      tr
-        td(v-for="(title, i) in tableColumnsTitle") {{ i }}
-      tr
-        td(v-for="(title, i) in tableColumnsTitle") {{ i }}
-    .divider или введите номера контрактов через запятую в форму ниже:
-    .form
-      input.contracts-input(placeholder="Номера контрактов")
-      .contracts-button.contracts-button_check
-        check-icon
-
+    preloader.contracts__preloader(v-if="isLoading" :size="50" line-bg-color="#eaeaea" line-fg-color="#b12726")
+    div(v-else)
+      VueDropzone(:options="dropzoneOptions", ref="myVueDropzone").invisible
+      base-button.contracts__upload(@click="uploadFile") Загрузите файл
+      table.contracts__table(v-if="contracts")
+        tr
+          th(v-for="title in tableColumnsTitle") {{ title }}
+        tr
+          td(v-for="(title, i) in tableColumnsTitle") {{ i }}
+        tr
+          td(v-for="(title, i) in tableColumnsTitle") {{ i }}
+        tr
+          td(v-for="(title, i) in tableColumnsTitle") {{ i }}
+      .divider или введите номера контрактов через запятую в форму ниже:
+      .form
+        input.contracts-input(v-model="contractsNumber" placeholder="Номера контрактов")
+        .contracts-button.contracts-button_check(@click="check")
+          check-icon
 </template>
 
 <script>
@@ -24,17 +25,21 @@ import Button from "@/components/controls/Button.vue";
 import VueDropzone from "vue2-dropzone";
 import config from "@/config/index.js";
 import { CheckIcon } from 'vue-feather-icons';
-
+import Preloader from 'vue-simple-spinner';
+import FileSaver from 'file-saver';
 
 export default {
   name: "Contracts",
   components: {
     BaseButton: Button,
     VueDropzone,
-    CheckIcon
+    CheckIcon,
+    Preloader
   },
   data() {
     return {
+      isLoading: false,
+      contractsNumber: [],
       tableColumnsTitle: [
         "№",
         "Номер контракта",
@@ -56,9 +61,26 @@ export default {
   },
   methods: {
     uploadFile() {
+      this.isLoading = true;
       const dropzone = this.$refs.myVueDropzone;
       dropzone.$el.click();
+    },
+    check() {
+      this.isLoading = true;
+    },
+    s2ab(s) {
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+      return buf;
     }
+  },
+  mounted() {
+    const blob = new Blob([this.s2ab(atob('sw'))], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"});
+
+    setTimeout(() => {
+      FileSaver.saveAs(blob, "contracts.xlsx");    
+    }, 2000)
   }
 };
 </script>
@@ -76,6 +98,12 @@ export default {
   &__upload {
     margin-top: 10px;
     width: 173px;
+  }
+  &__preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
   &__table {
     margin-top: 30px;
