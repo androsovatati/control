@@ -5,60 +5,39 @@
       .employee(v-for="(user, i) in users")
         .employee__avatar
           img(:src="user.avatar")
-        .employee__name {{ `${user.surname} ${user.name} ${user.patronymic}` }}
+        .employee__name {{ `${user.lastName} ${user.firstName} ${user.patronymic}` }}
         .employee__marker(v-html="markers[i]")
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 import "here-js-api/scripts/mapsjs-core";
 import "here-js-api/scripts/mapsjs-service";
 import "here-js-api/scripts/mapsjs-ui";
 import "here-js-api/scripts/mapsjs-mapevents";
 import "here-js-api/scripts/mapsjs-clustering";
-import * as feather from 'feather-icons';
-
-const objects = [
-  {
-    lat: 55.6115019,
-    lng: 37.5393117,
-  },
-  {
-    lat: 55.78827969,
-    lng: 37.6185186,
-  },
-  {
-    lat: 55.6130782,
-    lng: 37.4558024,
-  },
-  {
-    lat: 55.849969,
-    lng: 37.4113122,
-  },
-  {
-    lat: 55.850523,
-    lng: 37.4061663,
-  }
-];
+import * as feather from "feather-icons";
 
 export default {
   name: "Map",
   data() {
     return {
-      colors: ['#23b2f4', '#c69326', '#de4241', '#75b45c', '#8215e7'],
+      colors: ["#23b2f4", "#c69326", "#de4241", "#75b45c", "#8215e7"]
     };
   },
   computed: {
     ...mapState({
-      users: state => state.users,
+      users: state => state.users
     }),
     markers() {
-      return this.colors.map((color) => (
-        feather.icons['map-pin'].toSvg({ color })
-      ));
+      return this.colors.map(color =>
+        feather.icons["map-pin"].toSvg({ color })
+      );
     }
   },
-  mounted() {
+  async mounted() {
+    await this.$store.dispatch("getCombinations");
+
     const platform = new H.service.Platform({
       app_id: "WrRxwrtpbzvxLHrOpHyw",
       app_code: "piJRCl5pH_GmE9birwhupg",
@@ -70,7 +49,7 @@ export default {
     const defaultLayers = platform.createDefaultLayers({
       tileSize: pixelRatio === 1 ? 256 : 512,
       ppi: pixelRatio === 1 ? undefined : 320,
-      lg: 'RUS',
+      lg: "RUS"
     });
 
     const map = new H.Map(
@@ -88,8 +67,27 @@ export default {
     map.setCenter({ lat: 55.75370903771494, lng: 37.619813382625585 });
     map.setZoom(10);
 
-    const markers = objects.map((object) => new H.map.Marker({...object}));
-    markers.forEach((marker) => {
+    const markers = [];
+
+    this.$store.state.combinations.forEach((combination, idx) => {
+      const icon = feather.icons["map-pin"].toSvg({ color: this.colors[idx] });
+
+      combination.contracts.forEach(contract => {
+        markers.push(
+          new H.map.Marker(
+            {
+              lat: parseFloat(contract.latitude),
+              lng: parseFloat(contract.longitude)
+            },
+            {
+              icon: new H.map.Icon(icon)
+            }
+          )
+        );
+      });
+    });
+
+    markers.forEach(marker => {
       map.addObject(marker);
     });
   }
@@ -142,4 +140,3 @@ export default {
   }
 }
 </style>
-

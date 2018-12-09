@@ -1,12 +1,20 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-    configureWebpack: {
-        resolve: {
-            extensions: ['.js', '.vue', '.json'],
-            alias: {
-                '@': path.resolve(__dirname, 'src/'),
-            },
-        }
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true
+      }
     }
+  },
+  configureWebpack: {
+    resolve: {
+      extensions: [".js", ".vue", ".json"],
+      alias: {
+        "@": path.resolve(__dirname, "src/")
+      }
+    }
+  }
 };
