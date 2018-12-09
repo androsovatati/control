@@ -39,7 +39,8 @@ export default {
   },
   computed: {
     ...mapState({
-      users: state => state.users
+      users: state => state.users,
+      combinations: state => state.combinations
     }),
     viewStyle() {
       return { opacity: this.isLoading ? 0 : 1 };
@@ -89,10 +90,12 @@ export default {
     map.setZoom(10);
 
     const markers = [];
+    const longitudes = [];
+    const latitudes = [];
 
-    this.$store.state.combinations.forEach((combination, idx) => {
+    this.combinations.forEach((combination, idx) => {
       const userIndex = this.users.findIndex((user) => user.id === combination.user.id);
-      const icon = new H.map.Icon(this.markers[userIndex]);
+      const icon = new H.map.Icon(this.markers[userIndex], { size: { w: 40, h: 52 }});
 
       combination.contracts.forEach(contract => {
         markers.push(
@@ -101,17 +104,18 @@ export default {
               lat: parseFloat(contract.latitude),
               lng: parseFloat(contract.longitude)
             },
-            {
-              icon
-            }
+            { icon }
           )
         );
+        longitudes.push(contract.longitude);
+        latitudes.push(contract.latitude);
       });
     });
 
-    markers.forEach(marker => {
-      map.addObject(marker);
-    });
+    const group = new H.map.Group();
+    group.addObjects([...markers]);
+    map.addObject(group);
+    map.setViewBounds(group.getBounds(), true);
   }
 };
 </script>
