@@ -109,7 +109,7 @@ export default {
   &_active {
     font-weight: 500;
 
-    .menu-item__logo {
+    .menu-item__icon {
       color: $red;
     }
   }

@@ -48,18 +48,18 @@
       .attends__comment.comment
         .comment__title.comment-title
           message-circle-icon.comment-title__icon
-          .comment-title__text
-        .comment__text
+          .comment-title__text Комментарий
+        .comment__text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       .attends__photo.photo
         .photo__title.photo-title
-          .photo-title__icon
-          .photo-title__text
+          image-icon.photo-title__icon
+          .photo-title__text Фотографии
         .photo__main
         .photo__additional
       .attends__record.record
         .record__title.record-title
-          .record-title__icon
-          .record-title__text
+          mic-icon.record-title__icon
+          .record-title__text Аудио сообщения
         .record#waveform
 </template>
 
@@ -333,6 +333,45 @@ export default {
 
   svg {
     width: 18px;
+  }
+}
+
+.attends {
+  padding: 40px 30px;
+}
+
+.comment-title, .photo-title, .record-title {
+  display: flex;
+  align-items: center;
+}
+.comment {
+  &-title {
+    font-weight: 500;
+    &__icon {
+      width: 22px;
+      margin-right: 10px;
+      color: $red;
+    }
+  }
+  &__text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #5d5d5d;
+  }
+}
+
+.photo {
+  margin-top: 40px;
+  &-title {
+    font-weight: 500;
+    &__icon {
+      width: 22px;
+      margin-right: 10px;
+      color: $red;
+    }
+  }
+  &__main {
+    margin-top: 40px;
   }
 }
 </style>
