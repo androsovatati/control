@@ -55,17 +55,33 @@
           image-icon.photo-title__icon
           .photo-title__text Фотографии
         .photo__main
+          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+          img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
+          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
         .photo__additional
+          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+          img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
+          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+          img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
+          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
       .attends__record.record
         .record__title.record-title
           mic-icon.record-title__icon
           .record-title__text Аудио сообщения
-        .record#waveform
+        .wave
+          .wave__icon
+            play-circle-icon
+          .wave__image
+        .wave
+          .wave__icon
+            play-circle-icon
+          .wave__image
 </template>
 
 <script>
 import BasicButton from '@/components/controls/Button.vue';
-import { FileIcon, XIcon, ChevronRightIcon, ChevronUpIcon, ImageIcon, MicIcon, MessageCircleIcon, CheckIcon } from 'vue-feather-icons';
+import { FileIcon, XIcon, ChevronRightIcon, ChevronUpIcon, ImageIcon, MicIcon, MessageCircleIcon, CheckIcon, PlayCircleIcon } from 'vue-feather-icons';
 
 export default {
   name: "Event",
@@ -78,7 +94,8 @@ export default {
     MicIcon,
     MessageCircleIcon,
     CheckIcon,
-    ChevronUpIcon
+    ChevronUpIcon,
+    PlayCircleIcon
   },
   props: {
     data: {
@@ -371,7 +388,66 @@ export default {
     }
   }
   &__main {
+    display: flex;
+    margin-top: 15px;
+    img {
+      width: 205px;
+      height: 140px;
+      margin-right: 15px;
+    }
+  }
+  &__additional {
+    display: flex;
+    margin-top: 15px;
+    img {
+      width: 95px;
+      height: 70px;
+      margin-right: 15px;
+    }
+  }
+}
+
+.record {
+  margin-top: 40px;
+  &-title {
+    font-weight: 500;
+    &__icon {
+      width: 22px;
+      margin-right: 10px;
+      color: $red;
+    }
+  }
+  &__main {
     margin-top: 40px;
+  }
+}
+
+.wave {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $red-gradient;
+    color: white;
+
+    svg {
+      width: 17px;
+    }
+  }
+
+  &__image {
+    width: 200px;
+    height: 40px;
+    background: url('~@/assets/wave.png') no-repeat center center;
+    background-size: contain;
   }
 }
 </style>
