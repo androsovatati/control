@@ -1,8 +1,8 @@
 <template lang="pug">
   .contracts
     VueDropzone(:options="dropzoneOptions", ref="myVueDropzone").invisible
-    base-button.contracts__upload(@click="uploadFile") Загрузить файл
-    table.contracts__table
+    base-button.contracts__upload(@click="uploadFile") Загрузите файл
+    table.contracts__table(v-if="contracts")
       tr
         th(v-for="title in tableColumnsTitle") {{ title }}
       tr
@@ -11,6 +11,11 @@
         td(v-for="(title, i) in tableColumnsTitle") {{ i }}
       tr
         td(v-for="(title, i) in tableColumnsTitle") {{ i }}
+    .divider или введите номера контрактов через запятую в форму ниже:
+    .form
+      input.contracts-input(placeholder="Номера контрактов")
+      .contracts-button.contracts-button_check
+        check-icon
 
 </template>
 
@@ -18,12 +23,15 @@
 import Button from "@/components/controls/Button.vue";
 import VueDropzone from "vue2-dropzone";
 import config from "@/config/index.js";
+import { CheckIcon } from 'vue-feather-icons';
+
 
 export default {
   name: "Contracts",
   components: {
     BaseButton: Button,
-    VueDropzone
+    VueDropzone,
+    CheckIcon
   },
   data() {
     return {
@@ -101,6 +109,59 @@ export default {
     tr td:last-child,
     tr th:last-child {
       border-right: 0;
+    }
+  }
+}
+
+.divider {
+  margin: 20px 0;
+  font-size: 14px;
+}
+.form {
+  display: flex;
+  align-items: center;
+}
+.contracts-input {
+  width: 500px;
+  padding: 0 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  margin-right: 10px;
+  line-height: 40px;
+  outline: none;
+}
+.contracts-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+  font-size: 25px;
+  // font-weight: 500;
+  cursor: pointer;
+
+  &_check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $green-gradient;
+    svg {
+      display: block;
+      width: 25px;
+    }
+    &:hover {
+      background: $green-gradient-reverse;
+    }
+  }
+
+
+  &_add {
+    background: $blue;
+    margin-right: 10px;
+    &:hover {
+      background: lighten($color: $blue, $amount: 5%);
     }
   }
 }
