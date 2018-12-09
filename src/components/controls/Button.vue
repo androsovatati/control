@@ -62,9 +62,11 @@ export default {
     border-radius: 14px;
   }
 
-  &:hover {
-    .button-shadow::before {
-      background: rgba($color: #e04342, $alpha: 0.3);
+  &_red {
+    &:hover {
+      .button-shadow::before {
+        background: rgba($color: #e04342, $alpha: 0.3);
+      }
     }
   }
 }

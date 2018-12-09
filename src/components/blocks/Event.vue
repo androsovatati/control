@@ -44,28 +44,29 @@
               div.button-text(v-else)
                 span Свернуть
                 chevron-up-icon
-    .event__attends.attends(v-if="!isCollapsed")
-      .attends__comment.comment
-        .comment__title.comment-title
-          message-circle-icon.comment-title__icon
-          .comment-title__text Комментарий
-        .comment__text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      .attends__photo.photo
-        .photo__title.photo-title
-          image-icon.photo-title__icon
-          .photo-title__text Фотографии
-        .photo__main
-          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-          img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
-          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-        .photo__additional
-          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-          img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
-          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-          img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
-          img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-      .attends__record.record
+    transition(name="slide")
+      .event__attends.attends(v-if="!isCollapsed")
+        .attends__comment.comment
+          .comment__title.comment-title
+            message-circle-icon.comment-title__icon
+            .comment-title__text Комментарий
+          .comment__text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        .attends__photo.photo
+          .photo__title.photo-title
+            image-icon.photo-title__icon
+            .photo-title__text Фотографии
+          .photo__main
+            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+            img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
+            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+          .photo__additional
+            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+            img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
+            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+            img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
+            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+        .attends__record.record
         .record__title.record-title
           mic-icon.record-title__icon
           .record-title__text Аудио сообщения
@@ -120,8 +121,10 @@ export default {
   overflow: hidden;
 
   &-main {
+    background: white;
     padding: 25px 30px;
     position: relative;
+    z-index: 1;
     border-radius: 10px;
     overflow: hidden;
     &_shadow {
@@ -448,6 +451,16 @@ export default {
     height: 40px;
     background: url('~@/assets/wave.png') no-repeat center center;
     background-size: contain;
+  }
+}
+
+.slide {
+  &-enter-active {
+    transition: transform .3s ease;
+  }
+
+  &-enter, &-leave-to {
+    transform: translateY(-100px);
   }
 }
 </style>
