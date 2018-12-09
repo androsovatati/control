@@ -1,6 +1,6 @@
 <template lang="pug">
   .event
-    .event-line
+    .event-line(:class="{ 'event-line_success' : data.isValid }")
     .event__main-info
       .event__header.event-header
         .event-header__user.user
@@ -8,7 +8,9 @@
             img(src="https://randomuser.me/api/portraits/women/29.jpg")
           .user__name Петрова Анна Степановна
           .user__date сегодня 10:01
-        .event-header__contract.contract
+        .event-header__contract.contract(
+          :class="{ 'contract_success' : data.isValid }"
+        )
           .contract__icon
             file-icon
           .contract__number Контракт №57702038150150000160000
@@ -19,9 +21,11 @@
       .event__status.event-status
         .event-status__label Статус: 
         .event-status__value Проверка не пройдена
-        .event-status__icon
-          x-icon.event-status__icon-elem
-      .event__violation.event-violation
+        .event-status__icon(v-if="data.isValid")
+          check-icon.event-status__check-icon
+        .event-status__icon(v-else)
+          x-icon.event-status__x-icon
+      .event__violation.event-violation(v-if="!data.isValid")
         .event-violation__label Тип нарушения:
         .event-violation__value Работы выполнены не в полном объеме
       .event__footer.event-footer
@@ -57,7 +61,7 @@
 
 <script>
 import BasicButton from '@/components/controls/Button.vue';
-import { FileIcon, XIcon, ChevronRightIcon, ImageIcon, MicIcon, MessageCircleIcon } from 'vue-feather-icons';
+import { FileIcon, XIcon, ChevronRightIcon, ImageIcon, MicIcon, MessageCircleIcon, CheckIcon } from 'vue-feather-icons';
 
 export default {
   name: "Event",
@@ -68,7 +72,8 @@ export default {
     ChevronRightIcon,
     ImageIcon,
     MicIcon,
-    MessageCircleIcon
+    MessageCircleIcon,
+    CheckIcon
   },
   props: {
     data: {
@@ -102,6 +107,9 @@ export default {
     width: 6px;
     background-color: #b12726;
     background-image: linear-gradient(to top, #b12726 0%, #ed4b49 100%);
+    &_success {
+      background-image: linear-gradient(to top, #62a547 0%, #8ac473 100%);
+    }
   }
 
   &__header {
@@ -175,6 +183,11 @@ export default {
       color: white;
     }
   }
+  &_success {
+    .contract__icon {
+      background: $green-gradient;
+    }
+  }
   &__number {
     display: flex;
     align-items: center;
@@ -211,12 +224,18 @@ export default {
     width: 15px;
     height: 15px;
     color: white;
+  }
+  .event-status__check-icon{
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
+    background: $green-gradient;
+  }
+  .event-status__x-icon{
+    width: 13px;
+    height: 13px;
     background: $red-gradient;
-    &-elem {
-      width: 13px;
-      height: 13px;
-    }
+    border-radius: 50%;
   }
 }
 .event-violation {

@@ -18,7 +18,7 @@ export default {
         isValid: false,
       },
       ev2: {
-        isValid: false,
+        isValid: true,
       },
     }
   }
