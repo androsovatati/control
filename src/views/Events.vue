@@ -1,6 +1,7 @@
 <template lang="pug">
   .events-page
-    event
+    event.events-page__item(:data="ev1")
+    event.events-page__item(:data="ev2")
 </template>
 
 <script>
@@ -11,6 +12,16 @@ export default {
   components: {
     Event,
   },
+  data() {
+    return {
+      ev1: {
+        isValid: false,
+      },
+      ev2: {
+        isValid: false,
+      },
+    }
+  }
 }
 </script>
 
@@ -18,5 +29,8 @@ export default {
 @import "@/styles/colors.scss";
 
 .events-page {
+  &__item:not(:first-child) {
+    margin-top: 20px;
+  }
 }
 </style>

@@ -70,7 +70,7 @@ export default {
 .main {
   display: flex;
   grid-area: main;
-  padding: 0 40px 60px 40px;
+  padding: 0 40px 40px 40px;
 
   &__content {
     flex-grow: 1;

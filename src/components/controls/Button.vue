@@ -76,7 +76,6 @@ export default {
   border-radius: 23px;
   line-height: 45px;
   text-align: center;
-  transition: all .3s ease;
   cursor: pointer;
 
   &_white {

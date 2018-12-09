@@ -1,5 +1,6 @@
 <template lang="pug">
   .event
+    .event-line
     .event__main-info
       .event__header.event-header
         .event-header__user.user
@@ -9,22 +10,30 @@
           .user__date сегодня 10:01
         .event-header__contract.contract
           .contract__icon
-            i(data-feather="file")
+            file-icon
           .contract__number Контракт №57702038150150000160000
           .contract__link
             span Перейти
-            i(data-feather="chevron-right")
+            chevron-right-icon
       .event__title ГБУ "ЖИЛИЩНИК РАЙОНА ЮЖНОЕ ТУШИНО"
       .event__status.event-status
         .event-status__label Статус: 
         .event-status__value Проверка не пройдена
         .event-status__icon
-          i(data-feather="x")
+          x-icon.event-status__icon-elem
       .event__violation.event-violation
         .event-violation__label Тип нарушения:
         .event-violation__value Работы выполнены не в полном объеме
       .event__footer.event-footer
-        .event-footer__files.files Прикреплено 6 файлов
+        .event-footer__files.footer-files
+          .footer-files__text Прикреплено 6 файлов:
+          .footer-image
+            image-icon.footer-image__icon
+            .footer-image__count 5
+          .footer-records
+            mic-icon.footer-records__icon
+            .footer-records__count 1
+          message-circle-icon.footer-comments
         .event-footer__show-button
           basic-button Посмотреть отчет
     .event__attends.attends
@@ -48,11 +57,18 @@
 
 <script>
 import BasicButton from '@/components/controls/Button.vue';
+import { FileIcon, XIcon, ChevronRightIcon, ImageIcon, MicIcon, MessageCircleIcon } from 'vue-feather-icons';
 
 export default {
   name: "Event",
   components: {
     BasicButton,
+    FileIcon,
+    XIcon,
+    ChevronRightIcon,
+    ImageIcon,
+    MicIcon,
+    MessageCircleIcon
   },
   props: {
     data: {
@@ -72,18 +88,30 @@ export default {
 @import "@/styles/colors.scss";
 
 .event {
+  position: relative;
   background: white;
   border-radius: 10px;
   padding: 25px 30px;
+  overflow: hidden;
+
+  &-line {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background-color: #b12726;
+    background-image: linear-gradient(to top, #b12726 0%, #ed4b49 100%);
+  }
 
   &__header {
     display: flex;
   }
 
   &__title {
-    margin-top: 30px;
-    padding-bottom: 20px;
-    font-size: 18px;
+    margin-top: 20px;
+    padding-bottom: 15px;
+    font-size: 16px;
     font-weight: 500;
     border-bottom: 1px solid #dedede;
   }
@@ -91,7 +119,7 @@ export default {
   &__status {
     display: flex;
     align-items: center;
-    margin-top: 28px;
+    margin-top: 15px;
   }
 }
 
@@ -175,13 +203,90 @@ export default {
     font-weight: 500;
     margin-right: 5px;
   }
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+    width: 15px;
+    height: 15px;
+    color: white;
+    border-radius: 50%;
+    background: $red-gradient;
+    &-elem {
+      width: 13px;
+      height: 13px;
+    }
+  }
 }
 .event-violation {
   display: flex;
   align-items: center;
+  margin-top: 5px;
   &__label {
     font-weight: 500;
     margin-right: 5px;
   }
+}
+
+.event-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-files {
+  display: flex;
+  align-items: center;
+  color: $disabled-gray;
+  font-size: 14px;
+  &__text {
+    margin-right: 10px;
+  }
+}
+
+.footer-image, .footer-records {
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+  border-right: 1px solid #dedede;
+}
+.footer-image {
+  &__icon {
+    width: 18px;
+  }
+  &__count {
+    margin-left: 7px;
+    width: 25px;
+    height: 14px;
+    border-radius: 7px;
+    background: $blue;
+    text-align: center;
+    line-height: 14px;
+    font-size: 10px;
+    color: white;
+  }
+}
+
+.footer-records {
+  margin-left: 12px;
+  &__icon {
+    width: 18px;
+  }
+  &__count {
+    margin-left: 7px;
+    width: 25px;
+    height: 14px;
+    border-radius: 7px;
+    background: $blue;
+    text-align: center;
+    line-height: 14px;
+    font-size: 10px;
+    color: white;
+  }
+}
+
+.footer-comments {
+  margin-left: 12px;
+  width: 18px;
 }
 </style>

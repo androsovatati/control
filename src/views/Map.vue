@@ -2,7 +2,7 @@
   .map
     preloader.map__preloader(v-if="isLoading" :size="50" line-bg-color="#eaeaea" line-fg-color="#b12726")
     .map__view(:style="viewStyle")
-      .map__container(ref="map" style="width: 100%; height: 580px;")
+      .map__container(ref="map" style="width: 100%; height: 100%")
       .map__employees.employees
         .employee(v-for="(user, i) in users")
           .employee__avatar
@@ -18,6 +18,7 @@ import "here-js-api/scripts/mapsjs-service";
 import "here-js-api/scripts/mapsjs-ui";
 import "here-js-api/scripts/mapsjs-mapevents";
 import "here-js-api/scripts/mapsjs-clustering";
+import "here-js-api/styles/mapsjs-ui.css";
 import Preloader from 'vue-simple-spinner';
 import * as feather from "feather-icons";
 
@@ -67,10 +68,10 @@ export default {
     });
 
     this.$refs.map.addEventListener('DOMNodeInserted', () => {
-      clearTimeout(this.$options.timer);
-      this.$options.timer = setTimeout(() => {
+      // clearTimeout(this.$options.timer);
+      // this.$options.timer = setTimeout(() => {
         this.isLoading = false;
-      }, 500);
+      // }, 500);
     });
 
 
@@ -125,7 +126,8 @@ export default {
   &__view {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;
+    height: 100%;
     transition: opacity .3s ease;
   }
 
