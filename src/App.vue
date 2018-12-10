@@ -78,6 +78,7 @@ export default {
 .app {
   &__preloader {
     display: flex;
+    width: 100%;
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -92,6 +93,7 @@ export default {
 }
 .content {
   display: flex;
+  width: 100%;
   padding: 0 40px 40px 40px;
 }
 .main {

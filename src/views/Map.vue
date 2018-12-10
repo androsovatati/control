@@ -68,10 +68,10 @@ export default {
     });
 
     this.$refs.map.addEventListener('DOMNodeInserted', () => {
-      // clearTimeout(this.$options.timer);
-      // this.$options.timer = setTimeout(() => {
+      clearTimeout(this.$options.timer);
+      this.$options.timer = setTimeout(() => {
         this.isLoading = false;
-      // }, 500);
+      }, 100);
     });
 
 
