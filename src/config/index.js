@@ -1,4 +1,4 @@
 export default {
-  //apiHost: 'http://c6f82d1d.ngrok.io',
-  apiHost: ""
+  apiHost: 'http://192.168.0.14:5000',
+  // apiHost: ""
 };

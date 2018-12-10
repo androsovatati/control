@@ -1,7 +1,7 @@
 <template lang="pug">
   .contracts
     preloader.contracts__preloader(v-if="isLoading" :size="50" line-bg-color="#eaeaea" line-fg-color="#b12726")
-    div(v-else)
+    div(v-show="!isLoading")
       VueDropzone(:options="dropzoneOptions", ref="myVueDropzone").invisible
       base-button.contracts__upload(@click="uploadFile") Загрузите файл
       table.contracts__table(v-if="contracts")
@@ -76,11 +76,11 @@ export default {
     }
   },
   mounted() {
-    const blob = new Blob([this.s2ab(atob('sw'))], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"});
+    // const blob = new Blob([this.s2ab(atob('sw'))], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"});
 
-    setTimeout(() => {
-      FileSaver.saveAs(blob, "contracts.xlsx");    
-    }, 2000)
+    // setTimeout(() => {
+    //   FileSaver.saveAs(blob, "contracts.xlsx");    
+    // }, 2000)
   }
 };
 </script>

@@ -18,6 +18,22 @@ export default new Vuex.Store({
       state.combinations = [...list];
     }
   },
+  getters: {
+    contracts: (state) => {
+      if (!state.combinations.length || !state.users.length) {
+        return [];
+      }
+      const contracts = [];
+      state.combinations.forEach((c) => {
+        const res = c.contracts.map(r => ({
+          ...r,
+          ...c.user
+        }));
+        contracts.push(...res);
+      });
+      return contracts.sort((a, b) => a.isFinished);
+    }
+  },
   actions: {
     async getUsers({ commit }) {
       const res = await axios

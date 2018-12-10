@@ -1,32 +1,32 @@
 <template lang="pug">
   .event
     .event-main(:class="{ 'event-main_shadow': !isCollapsed }")
-      .event-line(:class="{ 'event-line_success' : data.isValid }")
+      .event-line(:class="{ 'event-line_success' : this.isValid }")
       .event__main-info
         .event__header.event-header
           .event-header__user.user
             .user__avatar
-              img(src="https://randomuser.me/api/portraits/women/29.jpg")
-            .user__name Петрова Анна Степановна
+              img(:src="data.avatar")
+            .user__name {{ `${data.lastName} ${data.firstName} ${data.patronymic}` }}
             .user__date сегодня 10:01
           .event-header__contract.contract(
-            :class="{ 'contract_success' : data.isValid }"
+            :class="{ 'contract_success' : this.isValid }"
           )
             .contract__icon
               file-icon
-            .contract__number Контракт №57702038150150000160000
+            .contract__number Контракт № {{ data.number }}
             .contract__link
               span Перейти
               chevron-right-icon
-        .event__title ГБУ "ЖИЛИЩНИК РАЙОНА ЮЖНОЕ ТУШИНО"
+        .event__title {{ data.customer }}
         .event__status.event-status
           .event-status__label Статус: 
           .event-status__value Проверка не пройдена
-          .event-status__icon(v-if="data.isValid")
+          .event-status__icon(v-if="this.isValid")
             check-icon.event-status__check-icon
           .event-status__icon(v-else)
             x-icon.event-status__x-icon
-        .event__violation.event-violation(v-if="!data.isValid")
+        .event__violation.event-violation(v-if="!this.isValid")
           .event-violation__label Тип нарушения:
           .event-violation__value Работы выполнены не в полном объеме
         .event__footer.event-footer
@@ -39,7 +39,7 @@
               mic-icon.footer-records__icon
               .footer-records__count 1
             message-circle-icon.footer-comments
-          basic-button.event-footer__show-button(:color="data.isValid ? 'green' : 'red'" @click="isCollapsed = !isCollapsed")
+          basic-button.event-footer__show-button(:color="this.isValid ? 'green' : 'red'" @click="isCollapsed = !isCollapsed")
               div(v-if="isCollapsed") Посмотреть отчет
               div.button-text(v-else)
                 span Свернуть
@@ -109,6 +109,11 @@ export default {
       isCollapsed: true,
     };
   },
+  computed: {
+    isValid() {
+      return this.data.troubles === 'Нет';
+    }
+  }
 };
 </script>
 

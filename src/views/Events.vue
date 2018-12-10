@@ -1,7 +1,7 @@
 <template lang="pug">
   .events-page
-    event.events-page__item(:data="ev1")
-    event.events-page__item(:data="ev2")
+    event.events-page__item(v-for="contract in contracts" :data="contract")
+    //- event.events-page__item(v-for="comb in combinations[0].contracts" :data="comb")
 </template>
 
 <script>
@@ -11,6 +11,11 @@ export default {
   name: 'Events',
   components: {
     Event,
+  },
+  props: {
+    contracts: {
+      type: Array,
+    }
   },
   data() {
     return {

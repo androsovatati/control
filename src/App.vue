@@ -3,9 +3,11 @@
     sidebar.sidebar
     main-header.header
     .main
-      router-view.main__content
-      widget.main__widgets(v-if="isShowWidget")
-        employee-efficiency
+      preloader.app__preloader(v-if="isLoading" :size="50" line-bg-color="#eaeaea" line-fg-color="#b12726")
+      .content(v-else)
+        router-view.main__content(:contracts="contracts")
+        widget.main__widgets(v-if="isShowWidget")
+          employee-efficiency
 </template>
 
 <script>
@@ -13,32 +15,44 @@ import MainHeader from "@/components/blocks/Header.vue";
 import Sidebar from "@/components/blocks/Sidebar.vue";
 import Widget from "@/components/elements/Widget.vue";
 import EmployeeEfficiency from "@/components/forms/EmployeeEfficiency.vue";
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import * as feather from 'feather-icons';
+import Preloader from 'vue-simple-spinner';
 
 export default {
   components: {
     MainHeader,
     Sidebar,
     Widget,
-    EmployeeEfficiency
+    EmployeeEfficiency,
+    Preloader
+  },
+  data() {
+    return {
+      isLoading: false,
+    };
   },
   computed: {
     ...mapState({
       users: state => state.users,
+      combinations: state => state.combinations,
     }),
+    ...mapGetters(['contracts']),
     isShowWidget() {
       return this.$route.name === 'events' || this.$route.name === 'statistic'
     },
   },
   methods: {
-    ...mapActions(['getUsers']),
+    ...mapActions(['getUsers', 'getCombinations']),
   },
   mounted() {
     feather.replace();
   },
   async created() {
+    this.isLoading = true;
     await this.getUsers();
+    await this.getCombinations();
+    this.isLoading = false;
   }
 };
 </script>
@@ -61,16 +75,29 @@ export default {
   font-weight: 300;
   line-height: 1.5;
 }
+.app {
+  &__preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+}
 .sidebar {
   grid-area: sidebar;
 }
 .header {
   grid-area: header;
 }
+.content {
+  display: flex;
+  padding: 0 40px 40px 40px;
+}
 .main {
   display: flex;
   grid-area: main;
-  padding: 0 40px 40px 40px;
+  // padding: 0 40px 40px 40px;
 
   &__content {
     flex-grow: 1;
