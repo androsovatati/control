@@ -103,13 +103,19 @@ export default {
           new H.map.Marker(
             {
               lat: parseFloat(contract.latitude),
-              lng: parseFloat(contract.longitude)
+              lng: parseFloat(contract.longitude),
             },
             { icon }
-          )
+          ).setData({...contract})
         );
         longitudes.push(contract.longitude);
         latitudes.push(contract.latitude);
+      });
+    });
+
+    markers.forEach((marker) => {
+      marker.addEventListener('pointerenter', (evt) => {
+        console.log(evt);
       });
     });
 

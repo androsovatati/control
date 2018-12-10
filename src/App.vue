@@ -53,6 +53,14 @@ export default {
     await this.getUsers();
     await this.getCombinations();
     this.isLoading = false;
+
+    this.$options.timer = setInterval(() => {
+      this.getCombinations();
+      console.log(1);
+    }, 2000);
+  },
+  beforeDestroy() {
+    clearInterval(this.$options.timer);
   }
 };
 </script>

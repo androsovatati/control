@@ -31,7 +31,7 @@ export default new Vuex.Store({
         }));
         contracts.push(...res);
       });
-      return contracts.sort((a, b) => a.isFinished);
+      return contracts.sort((a, b) => a.isFinished && !b.isFinished ? -1 : 1);
     }
   },
   actions: {

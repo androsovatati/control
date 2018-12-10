@@ -21,14 +21,15 @@
         .event__title {{ data.customer }}
         .event__status.event-status
           .event-status__label Статус: 
-          .event-status__value Проверка не пройдена
+          .event-status__value(v-if="this.isValid") Проверка пройдена
+          .event-status__value(v-else) Проверка не пройдена
           .event-status__icon(v-if="this.isValid")
             check-icon.event-status__check-icon
           .event-status__icon(v-else)
             x-icon.event-status__x-icon
         .event__violation.event-violation(v-if="!this.isValid")
           .event-violation__label Тип нарушения:
-          .event-violation__value Работы выполнены не в полном объеме
+          .event-violation__value {{ reason }}
         .event__footer.event-footer
           .event-footer__files.footer-files
             .footer-files__text Прикреплено 6 файлов:
@@ -112,6 +113,9 @@ export default {
   computed: {
     isValid() {
       return this.data.troubles === 'Нет';
+    },
+    reason() {
+      return this.data.reason || 'Работы выполнены не в полном объеме';
     }
   }
 };
