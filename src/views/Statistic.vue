@@ -17,6 +17,7 @@ import "here-js-api/scripts/mapsjs-clustering";
 import "here-js-api/styles/mapsjs-ui.css";
 import "@/lib/here-data.js";
 import { mapState, mapActions, mapGetters } from 'vuex';
+import heatmapData from '@/mocks/DataPoints.js';
 
 export default {
   name: 'Statistic',
@@ -40,7 +41,7 @@ export default {
     ppi: pixelRatio === 1 ? undefined : 320
     });
     const map = new H.Map(this.$refs.map,
-    defaultLayers.normal.basenight, {pixelRatio: pixelRatio});
+    defaultLayers.normal.map, {pixelRatio: pixelRatio});
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
     // this.$refs.map.addEventListener('DOMNodeInserted', () => {
@@ -53,30 +54,23 @@ export default {
     // map.setCenter({ lat: 55.75370903771494, lng: 37.619813382625585 });
     // map.setZoom(10);
 
-    console.log(H);
-
     const heatmapProvider = new H.data.heatmap.Provider({
         colors: new H.data.heatmap.Colors({
-        '0': 'blue',
-        '0.5': 'yellow',
+        '0': 'transparent',
+        '0.5': 'red',
         '1': 'red'
         }, true),
         assumeValues: true
     });
+  
+    // const markers = [];
+    // heatmapData.forEach(item => {
+    //     markers.push(
+    //       new H.map.Marker(item)
+    //     );
+    // });
 
-    const markers = [];
-    this.contracts.forEach(contract => {
-        markers.push(
-          new H.map.Marker(
-            {
-              lat: parseFloat(contract.latitude),
-              lng: parseFloat(contract.longitude)
-            }
-          )
-        );
-    });
-
-    heatmapProvider.addData(markers);
+    heatmapProvider.addData(heatmapData);
 
     const heatmapLayer = new H.map.layer.TileLayer(heatmapProvider, {
       opacity: 0.6
