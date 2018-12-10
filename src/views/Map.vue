@@ -9,6 +9,10 @@
             img(:src="user.avatar")
           .employee__name {{ `${user.lastName} ${user.firstName} ${user.patronymic}` }}
           .employee__marker(v-html="markers[i]")
+    .contract-info(v-if="contractInfo" :style="tooltipStyles")
+      .contract__name {{ contractInfo.customer }}
+      .contract__address {{ contractInfo.address }}
+      //- .contract__employee {{ `${contractInfo.lastName} ${contractInfo.firstName} ${contractInfo.patronymic}` }}
 </template>
 
 <script>
@@ -34,6 +38,9 @@ export default {
   },
   data() {
     return {
+      x: 0,
+      y: 0,
+      contractInfo: null,
       isLoading: true,
       colors: ["#23b2f4", "#c69326", "#de4241", "#75b45c", "#8215e7"]
     };
@@ -48,7 +55,10 @@ export default {
     },
     markers() {
       return this.colors.map(getMarkerByColor);
-    }
+    },
+    tooltipStyles() {
+      return { top: `${this.y}px`, left: `${this.x}px`, };
+    },
   },
   async mounted() {
     await this.$store.dispatch("getCombinations");
@@ -115,7 +125,16 @@ export default {
 
     markers.forEach((marker) => {
       marker.addEventListener('pointerenter', (evt) => {
-        console.log(evt);
+        const ev = evt.originalEvent;
+        // console.log(evt.originalEvent);
+        this.x = ev.clientX;
+        this.y = ev.clientY;
+        this.contractInfo = evt.target.P;
+      });
+      marker.addEventListener('pointerleave', (evt) => {
+        this.x = -100;
+        this.y = -100;
+        this.contractInfo = null;
       });
     });
 
@@ -183,6 +202,23 @@ export default {
   &__marker {
     margin-left: auto;
     margin-right: 0;
+  }
+}
+
+.contract-info {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  min-height: 50px;
+  background: white;
+  z-index: 1000;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 11px;
+
+  .contract__name{
+    font-weight: 500;
   }
 }
 </style>
