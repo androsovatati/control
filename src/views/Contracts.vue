@@ -85,7 +85,7 @@ export default {
 
       const a = document.createElement("a");
       a.setAttribute("download", "");
-      a.setAttribute("href", data.path);
+      a.setAttribute("href", `${config.apiHost}/${data.path}`);
       a.setAttribute("name", "contract.xlsx");
 
       console.log(a.getAttribute("href"));
@@ -94,7 +94,7 @@ export default {
 
       a.click();
 
-        this.isLoading = false;
+      this.isLoading = false;
     },
     s2ab(s) {
       var buf = new ArrayBuffer(s.length);

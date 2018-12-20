@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
+import config from "@/config";
 
 Vue.use(Vuex);
 
@@ -27,19 +28,27 @@ export default new Vuex.Store({
   },
   actions: {
     async getUsers({ commit }) {
-      const res = await axios.get(`/api/users`).then(resp => resp.data);
+      const res = await axios
+        .get(`${config.apiHost}/api/users`)
+        .then(resp => resp.data);
       commit("setUsers", res);
     },
     async getCombinations({ commit }) {
-      const res = await axios.get(`/api/combinations`).then(resp => resp.data);
+      const res = await axios
+        .get(`${config.apiHost}/api/combinations`)
+        .then(resp => resp.data);
       commit("setCombinations", res);
     },
     async getContracts({ commit }) {
-      const res = await axios.get(`/api/contracts`).then(resp => resp.data);
+      const res = await axios
+        .get(`${config.apiHost}/api/contracts`)
+        .then(resp => resp.data);
       commit("setContracts", res);
     },
     async getEvents({ commit }) {
-      const res = await axios.get(`/api/events`).then(resp => resp.data);
+      const res = await axios
+        .get(`${config.apiHost}/api/events`)
+        .then(resp => resp.data);
       commit("setEvents", res);
     }
   }
