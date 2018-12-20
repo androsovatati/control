@@ -57,7 +57,7 @@
             image-icon.photo-title__icon
             .photo-title__text Фотографии
           .photo__additional(v-for="image in images")
-            img(v-bind:src="'/' + image.data")
+            img(v-bind:src="getHost() + '/' + image.data")
         .attends__record.record
         .record__title.record-title
           mic-icon.record-title__icon
@@ -78,6 +78,7 @@ import {
   PlayCircleIcon
 } from "vue-feather-icons";
 import moment from "moment";
+import config from "@/config";
 
 export default {
   name: "Event",
@@ -109,6 +110,9 @@ export default {
       window.location.href =
         "http://zakupki.gov.ru/epz/contractfz223/quicksearch/search_eis.html?searchString=" +
         this.contract.number;
+    },
+    getHost() {
+      return config.apiHost;
     }
   },
   computed: {
