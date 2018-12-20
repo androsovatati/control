@@ -15,9 +15,9 @@ import MainHeader from "@/components/blocks/Header.vue";
 import Sidebar from "@/components/blocks/Sidebar.vue";
 import Widget from "@/components/elements/Widget.vue";
 import EmployeeEfficiency from "@/components/forms/EmployeeEfficiency.vue";
-import { mapState, mapActions, mapGetters } from 'vuex';
-import * as feather from 'feather-icons';
-import Preloader from 'vue-simple-spinner';
+import { mapState, mapActions, mapGetters } from "vuex";
+import * as feather from "feather-icons";
+import Preloader from "vue-simple-spinner";
 
 export default {
   components: {
@@ -29,34 +29,24 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
+      isLoading: false
     };
   },
   computed: {
     ...mapState({
       users: state => state.users,
-      combinations: state => state.combinations,
+      combinations: state => state.combinations
     }),
-    ...mapGetters(['contracts']),
+    ...mapGetters(["contracts"]),
     isShowWidget() {
-      return this.$route.name === 'events' || this.$route.name === 'statistic'
-    },
-  },
-  methods: {
-    ...mapActions(['getUsers', 'getCombinations']),
+      return this.$route.name === "events" || this.$route.name === "statistic";
+    }
   },
   mounted() {
     feather.replace();
-  },
-  async created() {
-    this.isLoading = true;
-    await this.getUsers();
-    await this.getCombinations();
-    this.isLoading = false;
 
-    this.$options.timer = setInterval(() => {
-      this.getCombinations();
-      console.log(1);
+    setInterval(() => {
+      this.$store.dispatch("getEvents");
     }, 2000);
   },
   beforeDestroy() {
@@ -66,9 +56,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'reset-css';
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
-@import '@/styles/colors.scss';
+@import "reset-css";
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
+@import "@/styles/colors.scss";
 
 #app {
   display: grid;
@@ -78,7 +68,7 @@ export default {
   color: $primary-gray;
   background: $bg-gray;
   min-height: 100vh;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.5;

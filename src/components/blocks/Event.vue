@@ -6,21 +6,21 @@
         .event__header.event-header
           .event-header__user.user
             .user__avatar
-              img(:src="data.avatar")
-            .user__name {{ `${data.lastName} ${data.firstName} ${data.patronymic}` }}
-            .user__date сегодня 10:01
+              img(:src="user.avatar")
+            .user__name {{ `${user.lastName} ${user.firstName} ${user.patronymic}` }}
+            .user__date {{ date }}
           .event-header__contract.contract(
             :class="{ 'contract_success' : this.isValid }"
           )
             .contract__icon
               file-icon
-            .contract__number Контракт № {{ data.number }}
+            .contract__number Контракт № {{ contract.number }}
             .contract__link
               span Перейти
               chevron-right-icon
-        .event__title {{ data.customer }}
+        .event__title {{ contract.customer }}
         .event__status.event-status
-          .event-status__label Статус: 
+          .event-status__label Статус:
           .event-status__value(v-if="this.isValid") Проверка пройдена
           .event-status__value(v-else) Проверка не пройдена
           .event-status__icon(v-if="this.isValid")
@@ -32,13 +32,13 @@
           .event-violation__value {{ reason }}
         .event__footer.event-footer
           .event-footer__files.footer-files
-            .footer-files__text Прикреплено 6 файлов:
+            .footer-files__text Прикреплено 11 файлов:
             .footer-image
               image-icon.footer-image__icon
-              .footer-image__count 5
+              .footer-image__count 9
             .footer-records
               mic-icon.footer-records__icon
-              .footer-records__count 1
+              .footer-records__count 2
             message-circle-icon.footer-comments
           basic-button.event-footer__show-button(:color="this.isValid ? 'green' : 'red'" @click="isCollapsed = !isCollapsed")
               div(v-if="isCollapsed") Посмотреть отчет
@@ -51,7 +51,7 @@
           .comment__title.comment-title
             message-circle-icon.comment-title__icon
             .comment-title__text Комментарий
-          .comment__text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          .comment__text {{ this.comment }}
         .attends__photo.photo
           .photo__title.photo-title
             image-icon.photo-title__icon
@@ -82,8 +82,19 @@
 </template>
 
 <script>
-import BasicButton from '@/components/controls/Button.vue';
-import { FileIcon, XIcon, ChevronRightIcon, ChevronUpIcon, ImageIcon, MicIcon, MessageCircleIcon, CheckIcon, PlayCircleIcon } from 'vue-feather-icons';
+import BasicButton from "@/components/controls/Button.vue";
+import {
+  FileIcon,
+  XIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+  ImageIcon,
+  MicIcon,
+  MessageCircleIcon,
+  CheckIcon,
+  PlayCircleIcon
+} from "vue-feather-icons";
+import moment from "moment";
 
 export default {
   name: "Event",
@@ -100,22 +111,45 @@ export default {
     PlayCircleIcon
   },
   props: {
-    data: {
+    event: {
       type: Object,
-      default: () => {},
+      default: () => {}
     }
   },
   data() {
     return {
-      isCollapsed: true,
+      isCollapsed: true
     };
   },
   computed: {
     isValid() {
-      return this.data.troubles === 'Нет';
+      return this.status === "Замечаний не обнаружено";
     },
     reason() {
-      return this.data.reason || 'Работы выполнены не в полном объеме';
+      return this.status;
+    },
+    user() {
+      return this.event.user;
+    },
+    contract() {
+      return this.event.contract;
+    },
+    status() {
+      return this.event.status;
+    },
+    date() {
+      return moment(this.event.timestamp).fromNow();
+    },
+    comment() {
+      const attach = this.contract.attaches.find(
+        attach => attach.type === "comment"
+      );
+
+      if (attach) {
+        return attach.data;
+      }
+
+      return "";
     }
   }
 };
@@ -177,7 +211,7 @@ export default {
   display: grid;
   grid-template-columns: 80px auto;
   grid-template-rows: 1fr 1fr;
-  grid-template-areas: 'avatar name' 'avatar date';
+  grid-template-areas: "avatar name" "avatar date";
   &__avatar {
     grid-area: avatar;
     width: 60px;
@@ -202,7 +236,7 @@ export default {
 .contract {
   display: flex;
   align-items: center;
-  margin-left: 80px;
+  margin-left: auto;
   width: 350px;
   height: 60px;
   box-shadow: 0 0 34px 4px rgba(56, 56, 56, 0.1);
@@ -231,6 +265,7 @@ export default {
     }
   }
   &__number {
+    padding-right: 10px;
     display: flex;
     align-items: center;
     height: 100%;
@@ -244,7 +279,7 @@ export default {
     color: $disabled-gray;
     cursor: pointer;
     &:hover {
-      background: rgba($color: $disabled-gray, $alpha: .1);
+      background: rgba($color: $disabled-gray, $alpha: 0.1);
     }
     svg {
       width: 15px;
@@ -267,13 +302,13 @@ export default {
     height: 15px;
     color: white;
   }
-  .event-status__check-icon{
+  .event-status__check-icon {
     width: 13px;
     height: 13px;
     border-radius: 50%;
     background: $green-gradient;
   }
-  .event-status__x-icon{
+  .event-status__x-icon {
     width: 13px;
     height: 13px;
     background: $red-gradient;
@@ -309,7 +344,8 @@ export default {
   }
 }
 
-.footer-image, .footer-records {
+.footer-image,
+.footer-records {
   display: flex;
   align-items: center;
   padding-right: 12px;
@@ -369,7 +405,9 @@ export default {
   padding: 40px 30px;
 }
 
-.comment-title, .photo-title, .record-title {
+.comment-title,
+.photo-title,
+.record-title {
   display: flex;
   align-items: center;
 }
@@ -458,17 +496,18 @@ export default {
   &__image {
     width: 200px;
     height: 40px;
-    background: url('~@/assets/wave.png') no-repeat center center;
+    background: url("~@/assets/wave.png") no-repeat center center;
     background-size: contain;
   }
 }
 
 .slide {
   &-enter-active {
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
   }
 
-  &-enter, &-leave-to {
+  &-enter,
+  &-leave-to {
     transform: translateY(-100px);
   }
 }

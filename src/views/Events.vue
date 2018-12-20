@@ -1,33 +1,37 @@
 <template lang="pug">
   .events-page
-    event.events-page__item(v-for="contract in contracts" :data="contract")
-    //- event.events-page__item(v-for="comb in combinations[0].contracts" :data="comb")
+    event.events-page__item(v-for="event in events" :event="event")
 </template>
 
 <script>
-import Event from '@/components/blocks/Event.vue';
+import Event from "@/components/blocks/Event.vue";
 
 export default {
-  name: 'Events',
+  name: "Events",
   components: {
-    Event,
+    Event
   },
-  props: {
-    contracts: {
-      type: Array,
+  computed: {
+    events() {
+      return this.$store.state.events.sort(
+        (first, second) => second.timestamp - first.timestamp
+      );
     }
   },
   data() {
     return {
       ev1: {
-        isValid: false,
+        isValid: false
       },
       ev2: {
-        isValid: true,
-      },
-    }
+        isValid: true
+      }
+    };
+  },
+  async mounted() {
+    await this.$store.dispatch("getEvents");
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

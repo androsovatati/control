@@ -2,20 +2,21 @@
   .contracts
     preloader.contracts__preloader(v-if="isLoading" :size="50" line-bg-color="#eaeaea" line-fg-color="#b12726")
     div(v-show="!isLoading")
-      VueDropzone(:options="dropzoneOptions", ref="myVueDropzone").invisible
-      base-button.contracts__upload(@click="uploadFile") Загрузите файл
-      table.contracts__table(v-if="contracts")
+      VueDropzone(:options="dropzoneOptions", ref="myVueDropzone", id="dropzone", @vdropzone-file-added="onAdded", @vdropzone-success="onSuccess").invisible
+      base-button.contracts__upload(@click="onDropzoneClick") Загрузите файл
+      table.contracts__table(v-if="contracts.length")
         tr
           th(v-for="title in tableColumnsTitle") {{ title }}
-        tr
-          td(v-for="(title, i) in tableColumnsTitle") {{ i }}
-        tr
-          td(v-for="(title, i) in tableColumnsTitle") {{ i }}
-        tr
-          td(v-for="(title, i) in tableColumnsTitle") {{ i }}
+        tr(v-for="(contract, i) in contracts").contract
+          td {{ i + 1 }}
+          td {{ contract.number }}
+          td {{ contract.subject }}
+          td {{ contract.cost }}
+          td {{ contract.address }}
+          td {{ contract.expirationDate }}
       .divider или введите номера контрактов через запятую в форму ниже:
       .form
-        input.contracts-input(v-model="contractsNumber" placeholder="Номера контрактов")
+        input.contracts-input(v-model="contractNumber" placeholder="Номера контрактов")
         .contracts-button.contracts-button_check(@click="check")
           check-icon
 </template>
@@ -24,9 +25,9 @@
 import Button from "@/components/controls/Button.vue";
 import VueDropzone from "vue2-dropzone";
 import config from "@/config/index.js";
-import { CheckIcon } from 'vue-feather-icons';
-import Preloader from 'vue-simple-spinner';
-import FileSaver from 'file-saver';
+import { CheckIcon } from "vue-feather-icons";
+import Preloader from "vue-simple-spinner";
+import axios from "axios";
 
 export default {
   name: "Contracts",
@@ -39,16 +40,14 @@ export default {
   data() {
     return {
       isLoading: false,
-      contractsNumber: [],
+      contractNumber: "",
       tableColumnsTitle: [
         "№",
         "Номер контракта",
-        "Заказчик",
-        "Дата окончания истечения контракта",
-        "Адрес",
-        "Комментарий",
-        "Предмет договора",
-        "Исполнитель"
+        "Предмет проверки",
+        "Стоимость объекта проверки",
+        "Адрес объекта",
+        "Дата завершения контракта"
       ],
       dropzoneOptions: {
         url: `${config.apiHost}/api/upload`,
@@ -59,28 +58,55 @@ export default {
       }
     };
   },
+  computed: {
+    contracts() {
+      return this.$store.state.contracts;
+    }
+  },
   methods: {
-    uploadFile() {
-      this.isLoading = true;
+    onDropzoneClick() {
       const dropzone = this.$refs.myVueDropzone;
       dropzone.$el.click();
     },
-    check() {
+    onAdded() {
       this.isLoading = true;
+    },
+    async onSuccess() {
+      await this.$store.dispatch("getContracts");
+      this.isLoading = false;
+    },
+    async check() {
+      const { contractNumber } = this;
+      const { data } = await axios.get(
+        config.apiHost + "/api/parse/" + contractNumber
+      );
+
+      console.log(data);
+
+      const a = document.createElement("a");
+      a.setAttribute("download", "");
+      a.setAttribute("href", "http://localhost:5000" + "/" + data.path);
+      a.setAttribute("name", "contract.xlsx");
+
+      console.log(a.getAttribute("href"));
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      //this.isLoading = true;
     },
     s2ab(s) {
       var buf = new ArrayBuffer(s.length);
       var view = new Uint8Array(buf);
-      for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+      for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
       return buf;
     }
   },
-  mounted() {
-    // const blob = new Blob([this.s2ab(atob('sw'))], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;"});
-
-    // setTimeout(() => {
-    //   FileSaver.saveAs(blob, "contracts.xlsx");    
-    // }, 2000)
+  async mounted() {
+    this.isLoading = true;
+    await this.$store.dispatch("getContracts");
+    this.isLoading = false;
   }
 };
 </script>
@@ -123,6 +149,9 @@ export default {
     th,
     td {
       border: 1px solid #dedede;
+    }
+    tr.contract:hover {
+      background-color: rgba(0, 0, 0, 0.05);
     }
     tr:first-child th {
       border-top: 0;
@@ -183,7 +212,6 @@ export default {
       background: $green-gradient-reverse;
     }
   }
-
 
   &_add {
     background: $blue;

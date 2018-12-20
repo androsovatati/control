@@ -8,7 +8,7 @@
       )
         i.menu-item__icon(data-feather="clipboard")
         .menu-item__text События
-        .menu-item__notice 35
+        .menu-item__notice {{ events.length }}
       router-link.sidebar-menu__item.menu-item(
         to="contracts"
         :class="getLinkClass('contracts')"
@@ -51,8 +51,7 @@
 <script>
 export default {
   name: "Sidebar",
-  components: {
-  },
+  components: {},
   data() {
     return {
       disabledItems: ["messages", "tasks"]
@@ -61,6 +60,9 @@ export default {
   computed: {
     activeItem() {
       return this.$route.name;
+    },
+    events() {
+      return this.$store.state.events;
     }
   },
   methods: {
@@ -95,7 +97,7 @@ export default {
   padding: 15px 30px;
   color: $primary-gray;
   text-decoration: none;
-  transition: color .2s ease, font-weight .2s ease;
+  transition: color 0.2s ease, font-weight 0.2s ease;
 
   &:first-child {
     margin-top: 10px;
