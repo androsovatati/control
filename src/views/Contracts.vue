@@ -14,9 +14,9 @@
           td {{ contract.cost }}
           td {{ contract.address }}
           td {{ contract.expirationDate }}
-      .divider или введите номера контрактов через запятую в форму ниже:
+      .divider или введите номер контракта в форму ниже:
       .form
-        input.contracts-input(v-model="contractNumber" placeholder="Номера контрактов")
+        input.contracts-input(v-model="contractNumber" placeholder="Номер контракта")
         .contracts-button.contracts-button_check(@click="check")
           check-icon
 </template>
@@ -76,16 +76,16 @@ export default {
       this.isLoading = false;
     },
     async check() {
+      this.isLoading = true;
+
       const { contractNumber } = this;
       const { data } = await axios.get(
         config.apiHost + "/api/parse/" + contractNumber
       );
 
-      console.log(data);
-
       const a = document.createElement("a");
       a.setAttribute("download", "");
-      a.setAttribute("href", "http://localhost:5000" + "/" + data.path);
+      a.setAttribute("href", data.path);
       a.setAttribute("name", "contract.xlsx");
 
       console.log(a.getAttribute("href"));
@@ -94,7 +94,7 @@ export default {
 
       a.click();
 
-      //this.isLoading = true;
+        this.isLoading = false;
     },
     s2ab(s) {
       var buf = new ArrayBuffer(s.length);

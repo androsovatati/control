@@ -15,7 +15,7 @@
             .contract__icon
               file-icon
             .contract__number Контракт № {{ contract.number }}
-            .contract__link
+            .contract__link(v-on:click="goToContract")
               span Перейти
               chevron-right-icon
         .event__title {{ contract.customer }}
@@ -32,13 +32,13 @@
           .event-violation__value {{ reason }}
         .event__footer.event-footer
           .event-footer__files.footer-files
-            .footer-files__text Прикреплено 11 файлов:
+            .footer-files__text Прикреплено {{images.length + audio.length}} файлов:
             .footer-image
               image-icon.footer-image__icon
-              .footer-image__count 9
+              .footer-image__count {{images.length}}
             .footer-records
               mic-icon.footer-records__icon
-              .footer-records__count 2
+              .footer-records__count {{ audio.length }}
             message-circle-icon.footer-comments
           basic-button.event-footer__show-button(:color="this.isValid ? 'green' : 'red'" @click="isCollapsed = !isCollapsed")
               div(v-if="isCollapsed") Посмотреть отчет
@@ -56,29 +56,12 @@
           .photo__title.photo-title
             image-icon.photo-title__icon
             .photo-title__text Фотографии
-          .photo__main
-            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-            img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
-            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-          .photo__additional
-            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-            img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
-            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
-            img(src="http://perego-shop.ru/gallery/images/2088808_kartinki-ulica.jpg")
-            img(src="https://www.mmsk.ru/objectdata/WebPageImpl/3679/Ulicy-Moskvy-13_Md.jpg")
+          .photo__additional(v-for="image in images")
+            img(v-bind:src="'/' + image.data")
         .attends__record.record
         .record__title.record-title
           mic-icon.record-title__icon
           .record-title__text Аудио сообщения
-        .wave
-          .wave__icon
-            play-circle-icon
-          .wave__image
-        .wave
-          .wave__icon
-            play-circle-icon
-          .wave__image
 </template>
 
 <script>
@@ -121,6 +104,13 @@ export default {
       isCollapsed: true
     };
   },
+  methods: {
+    goToContract() {
+      window.location.href =
+        "http://zakupki.gov.ru/epz/contractfz223/quicksearch/search_eis.html?searchString=" +
+        this.contract.number;
+    }
+  },
   computed: {
     isValid() {
       return this.status === "Замечаний не обнаружено";
@@ -150,6 +140,12 @@ export default {
       }
 
       return "";
+    },
+    images() {
+      return this.contract.attaches.filter(attach => attach.type === "image");
+    },
+    audio() {
+      return this.contract.attaches.filter(attach => attach.type === "audio");
     }
   }
 };
